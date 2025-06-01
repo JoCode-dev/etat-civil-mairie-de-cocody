@@ -22,7 +22,7 @@ define('COMMUNE_NAME', ' Mairie de Cocody');
 define('COMMUNE_POSTAL', '01 BP 001 Cocody');
 define('COMMUNE_SLOGAN', 'Ville accueillante et dynamique');
 define('COMMUNE_PHONE', '++225 23 45 67 89');
-define('COMMUNE_EMAIL', 'contact@mairie-yamoussoukro.ci');
+define('COMMUNE_EMAIL', 'contact@mairie-cocody.ci');
 
 // Chemins des images
 define('LOGO_PATH', 'images/logo.png');
