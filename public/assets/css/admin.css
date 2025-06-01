@@ -1,0 +1,232 @@
+            :root {
+            --primary-color: white;
+            --sidebar-width: 280px;
+            --header-height: 50px;
+            --orange: #ac6015;
+            --orange-clair: #FFB74D;
+            --blanc: #FFFFFF;
+            --vert: #4CAF50;
+            --vert-fonce: #388E3C;
+            --gris: #F5F5F5;
+        }
+        
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--orange);
+            text-decoration: none;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transition: width 0.3s ease;
+        }
+        
+        .sidebar.collapsed {
+            width: 70px;
+        }
+        
+        .app-brand {
+            padding: 8px;
+            height: var(--header-height);
+            background-color: var(--vert-fonce);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .sidebar.collapsed .app-brand,
+        .sidebar.collapsed .sidebar-item span {
+            display: none;
+        }
+        
+        .sidebar-menu {
+            padding: 10px 0;
+        }
+        
+        .sidebar-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            text-decoration: none; /* Supprime le soulignement des liens */
+            color: white; /* Texte non sélectionné en blanc */
+        }
+        
+        .sidebar.collapsed .sidebar-item {
+            justify-content: center;
+            padding: 15px 0;
+        }
+        
+        .sidebar-icon {
+            margin-right: 12px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        
+        .sidebar.collapsed .sidebar-icon {
+            margin-right: 0;
+            font-size: 1.3rem;
+        }
+        
+        .sidebar-item:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-item.active {
+            background-color: white;
+            color: var(--orange) !important;
+        }
+        
+        /* Header Styles */
+        .header {
+            height: var(--header-height);
+            background-color: var(--vert-fonce);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            left: var(--sidebar-width);
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            z-index: 100;
+            transition: left 0.3s ease;
+        }
+
+        .header .title{
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--blanc);
+        }
+
+        .action-icon {
+            color: white;
+            font-size: 1.25rem;
+            margin-left: 16px;
+            cursor: pointer;
+        }
+
+        .app-bar {
+            color: grey;
+            padding: 12px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .app-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .action-icon {
+            color: grey;
+            font-size: 1.25rem;
+            margin-left: 16px;
+            cursor: pointer;
+        }
+        
+        .action-iconWhite {
+            color: white;
+            font-size: 1.25rem;
+            margin-left: 16px;
+            cursor: pointer;
+        }
+        
+        .sidebar.collapsed ~ .header {
+            left: 70px;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--header-height);
+            padding: 25px;
+            flex: 1;
+            transition: margin-left 0.3s ease;
+        }
+        
+        .sidebar.collapsed ~ .main-content {
+            margin-left: 70px;
+        }
+        
+        /* Card Styles */
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: none;
+            margin-bottom: 25px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            border-bottom: 1px solid #eee;
+            font-weight: 500;
+            padding: 15px 20px;
+            border-radius: 10px 10px 0 0 !important;
+        }
+        
+        /* Product Table */
+        .product-img-table {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .sidebar:not(.collapsed) {
+                width: var(--sidebar-width);
+            }
+            
+            .header {
+                left: 70px;
+            }
+            
+            .sidebar:not(.collapsed) ~ .header {
+                left: var(--sidebar-width);
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .sidebar:not(.collapsed) ~ .main-content {
+                margin-left: var(--sidebar-width);
+            }
+        }
