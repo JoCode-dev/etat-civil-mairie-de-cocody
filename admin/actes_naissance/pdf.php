@@ -1,0 +1,226 @@
+<?php
+require_once __DIR__ . '/../../app/config/constants.php';
+require_once __DIR__ . '/../../app/config/database.php';
+require_once __DIR__ . '/../../admin/table_helper.php';
+require_once __DIR__ . '/../../admin/content_render.php';
+require_once __DIR__ . '/../../app/helpers/dropdown_helper.php';
+require_once __DIR__ . '/../../app/helpers/pagination_helper.php';
+require_once __DIR__ . '/../../app/helpers/action_helper.php';
+require_once __DIR__ . '/../../app/helpers/alert_helper.php';
+require_once __DIR__ . '/../../app/repositories/acte_naissance_repository.php';
+require_once __DIR__ . '/../../app/controllers/admin_controller.php';
+
+
+AdminController::requirelogin();
+$activeMenu = "naissances";
+AdminController::checkAndRedirectPermission($activeMenu);
+$acteNaissanceRepository = new ActeNaissanceRepository($db);
+$acteNaissanceModel = new ActeNaissanceModel();
+
+$errors = [];
+$success = false;
+$exceptionMessage = null;
+
+$id = intval($_GET['id']);
+$acteNaissanceModel = $acteNaissanceRepository->findById($id);
+
+
+
+?>
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extrait d'Acte de Naissance</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: "Times New Roman", serif;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+
+        h2,
+        h4 {
+            color: #343a40;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .row {
+            margin-bottom: 15px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .value {
+            color: #212529;
+            text-decoration: underline;
+        }
+
+        .mentions {
+            margin-top: 30px;
+            border-top: 1px solid #dee2e6;
+            padding-top: 20px;
+        }
+
+        .official-info {
+            margin-top: 30px;
+            border-top: 1px solid #dee2e6;
+            padding-top: 20px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .header-section {
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        @media print {
+            body {
+                background: none;
+                font-size: 12pt;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- En-tête -->
+        <div class="row header-section">
+            <div class="col-md-6 text-center">
+                <div class="label">COMMUNE DE <?php echo strtoupper(COMMUNE); ?></div>
+                <img src="/etatcivil/assets/img/favicon.png" alt="Logo" width="60" height="70" class="mt-2">
+                <h5>ETAT CIVIL</h5>
+                <div>------</div>
+                <div>Centre d'état civil <?php echo COMMUNE_NAME; ?> 3</div>
+            </div>
+
+            <div class="col-md-6 text-center">
+                <div class="label">REPUBLIQUE DE COTE D'IVOIRE</div>
+                <div>------</div>
+                <h3 class="label">EXTRAIT</h3>
+                <div class="label">Du registre des actes de naissance de l'Etat Civil</div>
+                <div class="label">Pour l'année <?= htmlspecialchars($acteNaissanceModel->getAnneeRegistre()) ?></div>
+            </div>
+        </div>
+
+
+
+
+        <div class="row">
+            <div class="col-5">
+                <p class="text-center">
+                    <span>N°</span>
+                    <span class="label"><?= htmlspecialchars($acteNaissanceModel->getNumeroRegistre()) ?></span>
+                    <span>DU</span>
+                    <span class="label"><?= date('d/m/Y', strtotime($acteNaissanceModel->getDateNaissance())) ?> DU REGISTRE</span>
+                </p>
+
+                <h5 class="text-center">NAISSANCE DE</h5>
+                <h3 class="text-center text-uppercase"><?= htmlspecialchars($acteNaissanceModel->getNom()) ?></h3>
+                <h4 class="text-center"><?= htmlspecialchars($acteNaissanceModel->getPrenoms()) ?>./</h4>
+            </div>
+            <div class="col-7">
+
+                <h5 class="label">Le <?= $acteNaissanceModel->getDateNaissanceLettre() ?>./.</h5>
+                <h5 class="label">à <?= $acteNaissanceModel->getHeureNaissanceLettre() ?>./.</h5>
+                <h5 class="label">est née <?= htmlspecialchars($acteNaissanceModel->getNom()) ?> <?= htmlspecialchars($acteNaissanceModel->getPrenoms()) ?>./.</h5>
+                <h5 class="label">à la <?= $acteNaissanceModel->getLieuNaissance() ?>./.</h5>
+                <h5 class="label">fille de <?= $acteNaissanceModel->getNomPere() ?>./.</h5>
+                <h5 class="label">profession <?= $acteNaissanceModel->getProfessionPere() ?>./.</h5>
+                <h5 class="label">et de <?= $acteNaissanceModel->getNomMere() ?>./.</h5>
+                <h5 class="label">profession <?= $acteNaissanceModel->getProfessionMere() ?>./.</h5>
+            </div>
+        </div> 
+
+
+        <!-- Mentions marginales -->
+        <div class="mentions">
+            <h4>MENTIONS <small>(éventuellement)</small></h4>
+            <hr class="my-2">
+           
+
+            <?php if ($acteNaissanceModel->getMentionMariage()): ?>
+                <p><span class="label">Mariée le</span> <span class="value"><?= htmlspecialchars($acteNaissanceModel->getMentionMariage()) ?> ./</span></p>
+            <?php else: ?>
+                <p><span class="label">Mariée le</span> ... <span class="value">Néant</span></p>
+            <?php endif; ?>
+
+            <?php if ($acteNaissanceModel->getMentionDivorce()): ?>
+                <p><span class="label">Mariage dissous par décision de divorce en date du</span>
+                    <span class="value"><?= htmlspecialchars($acteNaissanceModel->getMentionDivorce()) ?> ./</span>
+                </p>
+            <?php else: ?>
+                <p><span class="label">Mariage dissous par décision de divorce en date du...</span>
+                    <span class="value">Néant</span>
+                </p>
+            <?php endif; ?>
+
+            <?php if ($acteNaissanceModel->getMentionDeces()): ?>
+                <p><span class="label">Décédée le</span>
+                    <span class="value"><?= htmlspecialchars($acteNaissanceModel->getMentionDeces()) ?> ./</span>
+                </p>
+            <?php else: ?>
+                <p><span class="label">Décédée le</span> ... <span class="value">Néant</span></p>
+            <?php endif; ?>
+        </div>
+
+        <!-- Certification -->
+        <div class="mt-4">
+            <p><span class="label">Certifié le présent extrait conforme aux indications portées au registre</span></p>
+        </div>
+
+        <!-- Pied de page -->
+        <div class="official-info mt-5">
+            <div class="row">
+                <div class="col-md-6 offset-md-6 text-center">
+                    <p>Délivré à <?php echo strtoupper(COMMUNE); ?>, le <?= date('d/m/Y') ?></p>
+                    <p>L'Officier de l'ETAT CIVIL,</p>
+                    <img src="/etatcivil/assets/img/signature.png" alt="Logo" width="100" height="100" class="mt-2">
+                </div>
+            </div>
+        </div>
+
+        <!-- Bouton d'impression -->
+        <div class="row mt-4 no-print">
+            <div class="col-12 text-center">
+                <button onclick="window.print()" class="btn btn-primary">
+                    <i class="bi bi-printer"></i> Imprimer l'extrait
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,126 @@
+etat-civil/
+├── app/
+│   ├── Controllers/
+│   │   ├── AuthController.php
+│   │   ├── AdminController.php
+│   │   ├── CitoyenController.php
+│   │   ├── DemandeController.php
+│   │   └── Api/
+│   │       └── v1/
+│   │           └── DemandeApiController.php
+│   ├── Models/
+│   │   ├── Citoyen.php
+│   │   ├── Admin.php
+│   │   ├── Demande.php
+│   │   └── Acte/
+│   │       ├── ActeNaissance.php
+│   │       └── ActeMariage.php
+│   ├── Repositories/
+│   │   ├── CitoyenRepository.php
+│   │   ├── AdminRepository.php
+│   │   └── demande_repository.php
+│   ├── Services/
+│   │   ├── AuthService.php
+│   │   ├── DocumentService.php
+│   │   └── NotificationService.php
+│   ├── Middleware/
+│   │   ├── AuthMiddleware.php
+│   │   ├── AdminMiddleware.php
+│   │   └── ApiAuthMiddleware.php
+│   └── Exceptions/
+│       ├── AuthExceptions.php
+│       └── CustomExceptions.php
+├── config/
+│   ├── routes/
+│   │   ├── web.php
+│   │   └── api.php
+│   ├── database.php
+│   ├── mail.php
+│   └── services.php
+├── public/
+│   ├── assets/
+│   │   ├── css/
+│   │   ├── js/
+│   │   └── images/
+│   ├── uploads/
+│   │   ├── documents/
+│   │   └── signatures/
+│   └── index.php
+├── resources/
+│   ├── views/
+│   │   ├── auth/
+│   │   ├── admin/
+│   │   ├── citoyen/
+│   │   └── layouts/
+│   └── lang/
+│       ├── fr/
+│       └── en/
+├── storage/
+│   ├── logs/
+│   ├── cache/
+│   └── sessions/
+├── tests/
+│   ├── Unit/
+│   └── Feature/
+├── vendor/
+├── .env
+├── .env.example
+├── composer.json
+└── README.md
+
+
+
+
+Emplacement : /public/index.php
+Rôle :
+
+C'est le fichier exécuté en premier par le serveur web
+Initialise les constantes de base (ROOT_PATH, APP_PATH, etc.)
+Charge l'autoloader personnalisé
+Configure l'environnement (dev/prod) et la gestion des erreurs
+Initialise la session avec des paramètres sécurisés
+Crée le routeur et charge les fichiers de routes
+Dispatch la requête entrante vers le bon contrôleur
+// Gestion différente des erreurs en dev/prod
+if ($environment === 'development') {
+    error_reporting(E_ALL); // Affiche toutes les erreurs en dev
+} else {
+    error_reporting(E_ALL & ~E_NOTICE); // Masque les notices en prod
+}
+
+// Configuration sécurisée des sessions
+session_set_cookie_params([
+    'httponly' => true, // Empêche l'accès JS aux cookies
+    'samesite' => 'Lax' // Protection contre les attaques CSRF
+]);
+
+
+SessionService :
+
+Sécurisation des cookies (HttpOnly, Secure, SameSite)
+
+Régénération d'ID de session
+
+Gestion des messages flash
+
+Protection contre les attaques de fixation de session
+
+Container :
+
+Pattern Singleton
+
+Injection de dépendances
+
+Chargement paresseux (lazy loading)
+
+Possibilité de surcharge pour l'admin
+
+Request :
+
+Normalisation des URI
+
+Accès sécurisé aux données
+
+Support des headers HTTP
+
+Méthodes utilitaires pour les requêtes
