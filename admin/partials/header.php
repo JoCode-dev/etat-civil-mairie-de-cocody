@@ -36,9 +36,9 @@ AdminController::requireLogin();
 
     <header class="header">
         <div>
-           
-               <i id="sidebarToggle" class="bi bi-list action-iconWhite" ></i>
-           
+
+            <i id="sidebarToggle" class="bi bi-list action-iconWhite"></i>
+
             <span class="mb-0 title"><?php echo COMMUNE_NAME; ?></span>
         </div>
         <div class="user-profile dropdown">
@@ -48,9 +48,9 @@ AdminController::requireLogin();
                 <i class="bi bi-chevron-down"></i>
             </div>
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right me-2"></i>Pofile</a></li>
-                
                 <li><a class="dropdown-item" href="/etatcivil/admin/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Déconnexion</a></li>
+                <!-- <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right me-2"></i>Pofile</a></li> -->
+
             </ul>
         </div>
     </header>
